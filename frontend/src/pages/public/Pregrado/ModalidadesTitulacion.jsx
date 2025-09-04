@@ -7,7 +7,7 @@ import {
   FaBuilding,
   FaUniversity,
   FaFileAlt,
-  FaListUl,
+  FaBalanceScale,
   FaEdit,
   FaChevronDown,
 } from "react-icons/fa";
@@ -57,6 +57,13 @@ const modalidadesData = [
       "Trabajo investigativo con base metodológica que aborda una problemática teórica o práctica dentro del Trabajo Social.",
     ruta: "/pregrado/modalidades-titulacion/proyecto",
   },
+  {
+    titulo: "Doble Titulación",
+    icono: <FaBalanceScale />,
+    descripcion:
+      "Modalidad de titulación que permite a estudiantes de Trabajo Social obtener el título de licenciatura y un postgrado al mismo tiempo, a través de un diplomado orientado a la intervención social, investigación o gestión pública. Es una opción válida en coordinación con programas de posgrado de la UMSS y está dirigida a quienes deseen fortalecer su perfil profesional con enfoque práctico y académico.",
+    ruta: null, // No tiene ruta
+  },
 ];
 
 const ModalidadesTitulacion = () => {
@@ -76,14 +83,19 @@ const ModalidadesTitulacion = () => {
             <Title>{modalidad.titulo}</Title>
             <Divider />
             <MoreInfo onClick={() => toggleExpand(index)}>
-              Detalles <FaChevronDown className={expandedIndex === index ? "rotated" : ""} />
+              Detalles{" "}
+              <FaChevronDown
+                className={expandedIndex === index ? "rotated" : ""}
+              />
             </MoreInfo>
             {expandedIndex === index && (
               <>
                 <Description>{modalidad.descripcion}</Description>
-                <ButtonContainer>
-                  <VerMasBtn to={modalidad.ruta}>Ver pasos</VerMasBtn>
-                </ButtonContainer>
+                {modalidad.ruta && (
+                  <ButtonContainer>
+                    <VerMasBtn to={modalidad.ruta}>Ver pasos</VerMasBtn>
+                  </ButtonContainer>
+                )}
               </>
             )}
           </Card>
@@ -180,7 +192,7 @@ const Description = styled.p`
   font-size: 1rem;
   color: #444;
   margin-top: 10px;
-  text-align: left;
+  text-align: justify; /* 👈 Este cambio */
   padding: 0 15px;
 `;
 

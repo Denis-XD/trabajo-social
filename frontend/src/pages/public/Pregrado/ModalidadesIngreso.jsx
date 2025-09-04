@@ -1,28 +1,45 @@
 import { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import HeroSection from "../../../components/public/HeroSection";
-import { FaFileAlt, FaGraduationCap, FaGlobe, FaUserGraduate, FaChevronDown } from "react-icons/fa";
+import {
+  FaFileAlt,
+  FaGraduationCap,
+  FaGlobe,
+  FaUserGraduate,
+  FaChevronDown,
+  FaBookOpen,
+} from "react-icons/fa";
 
 const modalidadesData = [
   {
     titulo: "Exámen de Ingreso",
     icono: <FaFileAlt />,
-    descripcion: "Se realiza una Prueba de Suficiencia Académica (PSA) donde se evalúa los conocimientos de Álgebra, Trigonometría, Física, Química y Biología.",
+    descripcion:
+      "Se realiza una Prueba de Suficiencia Académica (PSA) obligatoria para el ingreso a la carrera de Trabajo Social. Evalúa conocimientos generales y es requisito habilitante para continuar el proceso.",
+  },
+  {
+    titulo: "Curso Preuniversitario",
+    icono: <FaBookOpen />,
+    descripcion:
+      "El curso preuniversitario es una modalidad de admisión que permite, a los postulantes bachilleres, iniciar estudios universitarios, a través de un proceso formativo dirigido a fortalecer sus conocimientos, mejorar sus capacidades cognoscitivas y desarrollar sus aptitudes para realizar estudios superiores.",
   },
   {
     titulo: "Admisión Especial",
     icono: <FaGraduationCap />,
-    descripcion: "Dirigido a Profesionales titulados del Sistema Universitario, maestros normalistas con título en provisión nacional a nivel licenciatura...",
+    descripcion:
+      "Permite el ingreso sin PSA ni Curso Preuniversitario. Dirigido a profesionales titulados del Sistema Universitario, Colegio Militar, Universidad Policial o Escuelas de Maestros; y a bachilleres con promedios de excelencia, logros en eventos nacionales, personas con discapacidad o pertenecientes a pueblos indígenas originarios y campesinos.",
   },
   {
     titulo: "Admisión Directa",
     icono: <FaGlobe />,
-    descripcion: "Dirigida a los dos bachilleres graduados con el mayor promedio académico de su Unidad Educativa...",
+    descripcion:
+      "Permite el ingreso libre a estudiantes destacados. Incluye el convenio COD-UMSS (un estudiante sobresaliente por sector agremiado) y a los mejores bachilleres de cada colegio del departamento (un hombre y una mujer). En Trabajo Social, además de esta modalidad, es obligatorio aprobar la Prueba de Personalidad de la Facultad de Humanidades.",
   },
   {
     titulo: "Programas de Becas Individuales (PBI)",
     icono: <FaUserGraduate />,
-    descripcion: "En cumplimiento de la Ley No. 2563, se contribuye a la profesionalización académica de bachilleres de bajos ingresos económicos...",
+    descripcion:
+      "En cumplimiento de la Ley No. 2563, se contribuye a la profesionalización académica de bachilleres de bajos ingresos económicos, que provienen de las 16 provincias del departamento, seleccionados con las organizaciones sociales (COD, FSUTCC, FDMCIOC “BS”, FEDECOR y 6 Federaciones del Trópico), para el ingreso libre a la Universidad Mayor de San Simón.",
   },
 ];
 
@@ -44,9 +61,14 @@ const ModalidadesIngreso = () => {
             <Title>{modalidad.titulo}</Title>
             <Divider />
             <MoreInfo onClick={() => toggleExpand(index)}>
-              Más Información <FaChevronDown className={expandedIndex === index ? "rotated" : ""} />
+              Más Información{" "}
+              <FaChevronDown
+                className={expandedIndex === index ? "rotated" : ""}
+              />
             </MoreInfo>
-            {expandedIndex === index && <Description>{modalidad.descripcion}</Description>}
+            {expandedIndex === index && (
+              <Description>{modalidad.descripcion}</Description>
+            )}
           </Card>
         ))}
       </CardsContainer>
@@ -70,7 +92,6 @@ const PageContainer = styled.div`
   width: 100%;
   background-color: #ffffff;
   overflow-x: hidden;
-  
 `;
 
 const CardsContainer = styled.div`
@@ -146,7 +167,7 @@ const Description = styled.p`
   font-size: 1rem;
   color: #444;
   margin-top: 10px;
-  text-align: left;
+  text-align: justify; /* 👈 aquí el cambio */
   padding: 0 15px;
 `;
 

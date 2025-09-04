@@ -42,11 +42,11 @@ const navigation = [
         title: "Modalidades de Ingreso",
         path: "/pregrado/modalidades-ingreso",
       },
-      { title: "Malla Curricular", path: "/pregrado/malla-curricular" },
       {
         title: "Modalidades de Titulación",
         path: "/pregrado/modalidades-titulacion",
       },
+      { title: "Malla Curricular", path: "/pregrado/malla-curricular" },
       { title: "Trámites", path: "/pregrado/tramites" },
     ],
   },
