@@ -197,26 +197,49 @@ const AsistentesAdmin = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // Validación para campo celular - solo números
-    if (name === "celular_inscripcion") {
-      const soloNumeros = value.replace(/\D/g, "");
-      setFormData((prev) => ({ ...prev, [name]: soloNumeros }));
-    } else if (name === "ci") {
-      const soloNumeros = value.replace(/\D/g, "");
-      setFormData((prev) => ({ ...prev, [name]: soloNumeros }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+    let newValue = value;
+
+    // ----- Validación para nombre_asistente -----
+    if (name === "nombre_asistente") {
+      // Solo letras y espacios
+      newValue = value
+        .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "")
+        .replace(/\s{2,}/g, " ");
+
+      // Limitar a 40 caracteres
+      if (newValue.length > 40) {
+        return;
+      }
+
+      setFormData((prev) => ({ ...prev, [name]: newValue }));
     }
 
-    // Mostrar sugerencias para nombre y CI
-    if ((name === "nombre_asistente" || name === "ci") && value.trim()) {
+    // ----- Validación para celular_inscripcion -----
+    else if (name === "celular_inscripcion") {
+      const soloNumeros = value.replace(/\D/g, "");
+      setFormData((prev) => ({ ...prev, [name]: soloNumeros }));
+    }
+
+    // ----- Validación para CI -----
+    else if (name === "ci") {
+      const soloNumeros = value.replace(/\D/g, "");
+      setFormData((prev) => ({ ...prev, [name]: soloNumeros }));
+    }
+
+    // ----- Otros campos sin validación especial -----
+    else {
+      setFormData((prev) => ({ ...prev, [name]: newValue }));
+    }
+
+    // ----- Sugerencias al escribir -----
+    if ((name === "nombre_asistente" || name === "ci") && newValue.trim()) {
       const sugerenciasFiltradas = asistentesExistentes.filter((asistente) => {
         if (name === "nombre_asistente") {
           return asistente.nombre_asistente
             .toLowerCase()
-            .includes(value.toLowerCase());
+            .includes(newValue.toLowerCase());
         } else {
-          return asistente.ci.includes(value);
+          return asistente.ci.includes(newValue);
         }
       });
 
@@ -421,6 +444,15 @@ const AsistentesAdmin = () => {
         "fail",
         "#D32F2F",
         "El CI debe contener solo números y máximo 10 dígitos"
+      );
+      return false;
+    }
+
+    if (!formData.email_inscripcion) {
+      agregarMensaje(
+        "fail",
+        "#D32F2F",
+        "El email del asistente es obligatorio"
       );
       return false;
     }
@@ -1247,6 +1279,7 @@ const AsistentesAdmin = () => {
                       value={formData.email_inscripcion}
                       onChange={handleInputChange}
                       placeholder="Ingrese el email"
+                      required
                     />
                   </FormGroup>
                   <FormGroup>

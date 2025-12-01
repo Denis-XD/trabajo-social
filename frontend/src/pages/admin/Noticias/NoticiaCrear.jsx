@@ -229,7 +229,14 @@ export default function NoticiaCrear() {
 
     let newValue = value;
 
-    // Limpiar y convertir a mayúsculas si es el título
+    if (name === "titulo_noticia" && value.length > 100) {
+      return;
+    }
+
+    if (name === "autor" && value.length > 40) {
+      return;
+    }
+
     if (name === "titulo_noticia") {
       newValue = cleanTitle(value);
     }
@@ -239,7 +246,6 @@ export default function NoticiaCrear() {
       [name]: type === "checkbox" ? checked : newValue,
     }));
 
-    // Limpiar error cuando el usuario empiece a escribir
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,

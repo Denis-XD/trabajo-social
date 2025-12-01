@@ -159,12 +159,22 @@ export default function Asistentes() {
   const handleFormChange = (e) => {
     const { name, value } = e.target;
 
-    // Para el campo CI, solo permitir números y máximo 20 dígitos
     if (name === "ci") {
       const numericValue = value.replace(/\D/g, "").slice(0, 20);
       setFormData({
         ...formData,
         [name]: numericValue,
+      });
+    } else if (name === "nombre_asistente") {
+      let cleaned = value
+        .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "")
+        .replace(/\s{2,}/g, " ");
+
+      cleaned = cleaned.slice(0, 40);
+
+      setFormData({
+        ...formData,
+        [name]: cleaned,
       });
     } else {
       setFormData({
@@ -173,7 +183,6 @@ export default function Asistentes() {
       });
     }
 
-    // Limpiar error cuando el usuario comienza a escribir
     if (formErrors[name]) {
       setFormErrors({
         ...formErrors,

@@ -190,6 +190,51 @@ export default function AutoridadesAdmin() {
   // Manejar cambios en el formulario
   const handleFormChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "nombre_persona") {
+      const soloLetras = value
+        .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "")
+        .replace(/\s{2,}/g, " ");
+
+      const limitado = soloLetras.slice(0, 40);
+
+      setFormData({
+        ...formData,
+        [name]: limitado,
+      });
+
+      if (formErrors[name]) {
+        setFormErrors({
+          ...formErrors,
+          [name]: null,
+        });
+      }
+
+      return;
+    }
+
+    if (name === "cargo") {
+      const soloLetras = value
+        .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "")
+        .replace(/\s{2,}/g, " ");
+
+      const limitado = soloLetras.slice(0, 30);
+
+      setFormData({
+        ...formData,
+        [name]: limitado,
+      });
+
+      if (formErrors[name]) {
+        setFormErrors({
+          ...formErrors,
+          [name]: null,
+        });
+      }
+
+      return;
+    }
+
     setFormData({
       ...formData,
       [name]: value,

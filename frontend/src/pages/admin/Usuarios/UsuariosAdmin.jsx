@@ -198,6 +198,28 @@ export default function UsuariosAdmin() {
   const handleFormChange = (e) => {
     const { name, value } = e.target;
 
+    if (name === "name") {
+      const soloLetras = value
+        .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "")
+        .replace(/\s{2,}/g, " ");
+
+      const limitado = soloLetras.slice(0, 40);
+
+      setFormData({
+        ...formData,
+        [name]: limitado,
+      });
+
+      if (formErrors[name]) {
+        setFormErrors({
+          ...formErrors,
+          [name]: null,
+        });
+      }
+
+      return;
+    }
+
     // Para el campo celular, solo permitir números y máximo 8 dígitos
     if (name === "celular_user") {
       const onlyNumbers = value.replace(/\D/g, "");

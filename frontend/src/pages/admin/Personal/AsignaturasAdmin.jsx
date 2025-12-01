@@ -154,6 +154,25 @@ export default function AsignaturasAdmin() {
   // Manejar cambios en el formulario
   const handleFormChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "nombre_asignatura") {
+      const limitado = value.slice(0, 80);
+
+      setFormData({
+        ...formData,
+        [name]: limitado,
+      });
+
+      if (formErrors[name]) {
+        setFormErrors({
+          ...formErrors,
+          [name]: null,
+        });
+      }
+
+      return;
+    }
+
     setFormData({
       ...formData,
       [name]: value,
@@ -1042,8 +1061,9 @@ const MobileCard = styled.div`
 const MobileCardHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 0.75rem;
+  flex-wrap: wrap; /* 🔥 Esto permite que el título pueda caer abajo */
 `;
 
 const MobileCardTitle = styled.h3`
@@ -1054,6 +1074,12 @@ const MobileCardTitle = styled.h3`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  flex: 1;             /* 🔥 Permite que el texto use el ancho disponible */
+  min-width: 0;        /* 🔥 Necesario para que el flex deje romper línea */
+  white-space: normal; /* 🔥 Permite múltiples líneas */
+  overflow-wrap: break-word;
+  word-break: break-word;
 `;
 
 const MobileCardActions = styled.div`

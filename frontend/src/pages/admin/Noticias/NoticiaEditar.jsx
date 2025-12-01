@@ -286,11 +286,18 @@ export default function NoticiaEditar() {
     return null;
   };
 
-  // Manejar cambios en el formulario
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
     let newValue = value;
+
+    if (name === "titulo_noticia" && value.length > 100) {
+      return;
+    }
+
+    if (name === "autor" && value.length > 40) {
+      return;
+    }
 
     if (name === "titulo_noticia") {
       newValue = cleanTitle(value);

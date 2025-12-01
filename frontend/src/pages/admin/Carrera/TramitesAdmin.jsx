@@ -180,6 +180,25 @@ export default function TramitesAdmin() {
   // Manejar cambios en el formulario
   const handleFormChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "titulo_tramite") {
+      const limitado = value.slice(0, 80);
+
+      setFormData({
+        ...formData,
+        [name]: limitado,
+      });
+
+      if (formErrors[name]) {
+        setFormErrors({
+          ...formErrors,
+          [name]: null,
+        });
+      }
+
+      return;
+    }
+
     setFormData({
       ...formData,
       [name]: value,

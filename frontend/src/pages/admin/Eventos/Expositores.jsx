@@ -152,12 +152,33 @@ export default function Expositores() {
   const handleFormChange = (e) => {
     const { name, value } = e.target;
 
+    if (name === "nombre_expositor") {
+      let cleaned = value
+        .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s().]/g, "")
+        .replace(/\s{2,}/g, " ");
+
+      cleaned = cleaned.slice(0, 40);
+
+      setFormData({
+        ...formData,
+        [name]: cleaned,
+      });
+
+      if (formErrors[name]) {
+        setFormErrors({
+          ...formErrors,
+          [name]: null,
+        });
+      }
+
+      return;
+    }
+
     setFormData({
       ...formData,
       [name]: value,
     });
 
-    // Limpiar error cuando el usuario comienza a escribir
     if (formErrors[name]) {
       setFormErrors({
         ...formErrors,

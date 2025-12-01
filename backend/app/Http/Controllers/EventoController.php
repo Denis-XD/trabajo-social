@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Evento;
 use App\Models\Expositor;
 use App\Models\Inscripcion;
@@ -495,6 +496,7 @@ class EventoController extends Controller
 
             return [
                 'titulo_evento' => $evento->titulo_evento,
+                'fecha_evento' => Carbon::parse($evento->fecha_evento)->format('d/m/Y'),
                 'total_inscripciones' => $total,
                 'porcentaje_certificados' => $total ? round(($participantes * 100) / $total, 2) : 0,
             ];

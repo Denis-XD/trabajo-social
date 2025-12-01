@@ -148,7 +148,23 @@ const FormularioEvento = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // Restricciones específicas
+    if (name === "nombre_asistente") {
+      const soloLetras = value
+        .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "")
+        .replace(/\s{2,}/g, " ");
+
+      const limitado = soloLetras.slice(0, 40);
+
+      setFormData((prev) => ({
+        ...prev,
+        [name]: limitado,
+      }));
+
+      validateField(name, limitado);
+
+      return;
+    }
+
     if (name === "ci" && (!/^\d*$/.test(value) || value.length > 10)) {
       return;
     }

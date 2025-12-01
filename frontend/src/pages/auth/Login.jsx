@@ -49,8 +49,7 @@ const Login = () => {
     }
   };
 
-  const togglePasswordVisibility = (e) => {
-    e.preventDefault();
+  const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
@@ -134,7 +133,7 @@ const Login = () => {
               onChange={handleChange}
               error={errors.password}
             />
-            <TogglePassword onClick={togglePasswordVisibility}>
+            <TogglePassword type="button" onClick={togglePasswordVisibility}>
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </TogglePassword>
             {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
