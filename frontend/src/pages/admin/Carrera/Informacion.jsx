@@ -16,6 +16,37 @@ export default function Informacion() {
   const [newEmail, setNewEmail] = useState("");
   const [newPhone, setNewPhone] = useState("");
 
+  // Funciones de validación de caracteres
+  const validarCaracteres = (valor, tipo) => {
+    let regex;
+
+    switch (tipo) {
+      case "nombre_carrera":
+      case "facultad":
+      case "ensenanza":
+      case "idiomas":
+      case "grado":
+        // Solo letras (mayúsculas, minúsculas), espacios, punto y ñ
+        regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]*$/;
+        break;
+
+      case "duracion":
+        // Números, letras (mayúsculas, minúsculas), espacios, punto y ñ
+        regex = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.]*$/;
+        break;
+
+      case "direccion":
+        // Letras (mayúsculas, minúsculas), espacios, ñ y los caracteres "().,"
+        regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s().,"]*$/;
+        break;
+
+      default:
+        return true;
+    }
+
+    return regex.test(valor);
+  };
+
   // Función para agregar mensajes
   const agregarMensaje = (
     tipo,
@@ -43,7 +74,7 @@ export default function Informacion() {
         setLoading(true);
         const response = await api.get("/carrera");
         setCarrera(response.data);
-        setOriginalData(JSON.parse(JSON.stringify(response.data))); // Copia profunda
+        setOriginalData(JSON.parse(JSON.stringify(response.data)));
       } catch (error) {
         console.error("Error al cargar los datos:", error);
         agregarMensaje(
@@ -59,9 +90,20 @@ export default function Informacion() {
     fetchData();
   }, []);
 
-  // Manejar cambios en los campos principales
+  // Manejar cambios en los campos principales con validación
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Validar longitud máxima
+    if (value.length > 60) {
+      return; // No actualizar si excede 60 caracteres
+    }
+
+    // Validar caracteres permitidos
+    if (!validarCaracteres(value, name)) {
+      return; // No actualizar el estado si contiene caracteres no permitidos
+    }
+
     setCarrera({
       ...carrera,
       [name]: value,
@@ -70,6 +112,11 @@ export default function Informacion() {
 
   // Manejar cambios en correos
   const handleEmailChange = (index, value) => {
+    // Validar longitud máxima
+    if (value.length > 50) {
+      return;
+    }
+
     const updatedEmails = [...carrera.correos];
     updatedEmails[index] = {
       ...updatedEmails[index],
@@ -83,6 +130,11 @@ export default function Informacion() {
 
   // Manejar cambios en teléfonos
   const handlePhoneChange = (index, value) => {
+    // Validar longitud máxima
+    if (value.length > 20) {
+      return;
+    }
+
     const updatedPhones = [...carrera.telefonos];
     updatedPhones[index] = {
       ...updatedPhones[index],
@@ -123,7 +175,7 @@ export default function Informacion() {
     }
 
     const newEmailObj = {
-      id_carrera_correo: Date.now(), // ID temporal
+      id_carrera_correo: Date.now(),
       id_carrera: carrera.id_carrera,
       correo_carrera: newEmail,
       created_at: new Date().toISOString(),
@@ -159,7 +211,7 @@ export default function Informacion() {
     }
 
     const newPhoneObj = {
-      id_carrera_telefono: Date.now(), // ID temporal
+      id_carrera_telefono: Date.now(),
       id_carrera: carrera.id_carrera,
       telefono: newPhone,
       created_at: new Date().toISOString(),
@@ -195,7 +247,7 @@ export default function Informacion() {
 
   // Cancelar cambios
   const handleCancel = () => {
-    setCarrera(JSON.parse(JSON.stringify(originalData))); // Restaurar datos originales
+    setCarrera(JSON.parse(JSON.stringify(originalData)));
     setEditingEmail(null);
     setEditingPhone(null);
     setNewEmail("");
@@ -256,7 +308,7 @@ export default function Informacion() {
         })),
         telefonos: carrera.telefonos.map((t) => ({ telefono: t.telefono })),
       });
-      setOriginalData(JSON.parse(JSON.stringify(carrera))); // Actualizar datos originales
+      setOriginalData(JSON.parse(JSON.stringify(carrera)));
       agregarMensaje("success", "#2E7D32", "Datos guardados correctamente.");
     } catch (error) {
       console.error("Error al guardar los datos:", error);
@@ -445,7 +497,11 @@ export default function Informacion() {
           <AddItemInput
             type="email"
             value={newEmail}
-            onChange={(e) => setNewEmail(e.target.value)}
+            onChange={(e) => {
+              if (e.target.value.length <= 50) {
+                setNewEmail(e.target.value);
+              }
+            }}
             placeholder="Agregar nuevo correo"
           />
           <AddButton onClick={addEmail}>
@@ -520,7 +576,11 @@ export default function Informacion() {
           <AddItemInput
             type="text"
             value={newPhone}
-            onChange={(e) => setNewPhone(e.target.value)}
+            onChange={(e) => {
+              if (e.target.value.length <= 20) {
+                setNewPhone(e.target.value);
+              }
+            }}
             placeholder="Agregar nuevo teléfono"
           />
           <AddButton onClick={addPhone}>
@@ -549,7 +609,6 @@ export default function Informacion() {
     </Container>
   );
 }
-
 // Styled Components
 
 const fadeIn = keyframes`
